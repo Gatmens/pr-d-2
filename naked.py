@@ -7,6 +7,7 @@ import yaml
 
 #ipmorts datetime from datetime lib
 from datetime import datetime
+from configparser import ConfigParser
 
 # prints a message indicating the start of the program
 print('Asteroid processing service')
@@ -14,9 +15,15 @@ print('Asteroid processing service')
 # prints a message indicating that config is being loaded
 print('Loading configuration from file')
 
-# defining NASA API key and url 
-nasa_api_key = "qMYE1TjhlJ1oycdE3NqxapOzBbVHFJuga8IN8jlL"
-nasa_api_url = "https://api.nasa.gov/neo/"
+try:
+	config = ConfigParser()
+	config.read('config.ini')
+
+	nasa_api_key = config.get('nasa', 'api_key')
+	nasa_api_url = config.get('nasa', 'api_url')
+except:
+	logger.exception('')
+print('DONE')
 
 # Getting todays date and formating it as a string
 dt = datetime.now()
