@@ -1,5 +1,3 @@
-#A comment
-
 # Imports libraries
 import requests
 import json
@@ -158,9 +156,6 @@ if __name__ == "__main__":
 						tmp_ast_name = val['name']
 						tmp_ast_nasa_jpl_url = val['nasa_jpl_url']
 
-						# Getting id of asteroid
-						tmp_ast_id = val['id']
-
 						if 'kilometers' in val['estimated_diameter']:
 							if 'estimated_diameter_min' and 'estimated_diameter_max' in val['estimated_diameter']['kilometers']:
 								tmp_ast_diam_min = round(val['estimated_diameter']['kilometers']['estimated_diameter_min'], 3)
@@ -209,9 +204,9 @@ if __name__ == "__main__":
 
 						# Adding asteroid data to the corresponding array
 						if tmp_ast_hazardous == True:
-							ast_hazardous.append([tmp_ast_name, tmp_ast_nasa_jpl_url, tmp_ast_diam_min, tmp_ast_diam_max, tmp_ast_close_appr_ts, tmp_ast_close_appr_dt_utc, tmp_ast_close_appr_dt, tmp_ast_speed, tmp_ast_miss_dist, tmp_ast_id])
+							ast_hazardous.append([tmp_ast_name, tmp_ast_nasa_jpl_url, tmp_ast_diam_min, tmp_ast_diam_max, tmp_ast_close_appr_ts, tmp_ast_close_appr_dt_utc, tmp_ast_close_appr_dt, tmp_ast_speed, tmp_ast_miss_dist])
 						else:
-							ast_safe.append([tmp_ast_name, tmp_ast_nasa_jpl_url, tmp_ast_diam_min, tmp_ast_diam_max, tmp_ast_close_appr_ts, tmp_ast_close_appr_dt_utc, tmp_ast_close_appr_dt, tmp_ast_speed, tmp_ast_miss_dist, tmp_ast_id])
+							ast_safe.append([tmp_ast_name, tmp_ast_nasa_jpl_url, tmp_ast_diam_min, tmp_ast_diam_max, tmp_ast_close_appr_ts, tmp_ast_close_appr_dt_utc, tmp_ast_close_appr_dt, tmp_ast_speed, tmp_ast_miss_dist])
 
 			#If there aren't any asteroids, it prints information accordingly
 			else:
@@ -232,12 +227,12 @@ if __name__ == "__main__":
 			# Sorts hazardous asteroids by miss distance
 			ast_hazardous.sort(key = lambda x: x[8], reverse=False)
 			logger.info("Closest passing distance is for: " + str(ast_hazardous[0][0]) + " at: " + str(int(ast_hazardous[0][8])) + " km | more info: " + str(ast_hazardous[0][1]))
-			push_asteroids_arrays_to_db(request_date, ast_hazardous, 1)
+
 
 		#If there aren't any hazardous asteroids, it prints information accordingly
 		else:
 			logger.info("No asteroids close passing earth today")
-		if len(ast_safe) > 0:
+			push_asteroids_arrays_to_db(request_date, ast_hazardous, 1)
 			push_asteroids_arrays_to_db(request_date, ast_safe, 0)
 
 	#If the response isn't 200 (successful), it prints information accordingly
