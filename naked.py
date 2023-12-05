@@ -1,5 +1,4 @@
 #A comment
-#Another comment
 
 # Imports libraries
 import requests
